@@ -1,13 +1,9 @@
 import re
 from collections import Counter
 
-try:
-    from Queue import Queue
-except ImportError:
-    from queue import Queue  # py3
-
 from ec2ingress import logger
 import ec2ingress.util as util
+from ec2ingress.compat import Queue
 
 myip_urls = (
     'https://wtfismyip.com/text',

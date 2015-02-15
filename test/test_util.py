@@ -4,12 +4,8 @@ from __future__ import unicode_literals
 
 import time
 
-try:
-    from Queue import Queue
-except ImportError:
-    from queue import Queue
-
 import ec2ingress.util as U
+from ec2ingress.compat import Queue
 
 
 def test_decode_utf8():

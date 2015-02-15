@@ -1,10 +1,7 @@
 import contextlib
 from threading import Thread
 
-try:
-    import urllib.request as urllib  # py3
-except ImportError:
-    import urllib2 as urllib
+from ec2ingress.compat import urlopen
 
 
 def pluck(d, *keys):
@@ -58,5 +55,5 @@ def readurl(url):
     """
     Read the contents at the given `url`, returning a unicode string.
     """
-    with contextlib.closing(urllib.urlopen(url)) as conn:
+    with contextlib.closing(urlopen(url)) as conn:
         return decode(conn.read())
