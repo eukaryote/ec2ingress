@@ -79,7 +79,6 @@ class Ingress(object):
 
     def remove(self, ip=None, port=22):
         for rule in self.sg.ip_permissions:
-            # import pprint; print('rule: %s' % pprint.pformat(rule))
             sig = util.pluck(rule, 'IpProtocol', 'FromPort', 'ToPort')
             if sig != ('tcp', port, port):
                 continue

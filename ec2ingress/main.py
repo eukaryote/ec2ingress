@@ -3,11 +3,9 @@ import logging
 import argparse
 import pprint
 
-import ipgetter
-
 import ec2ingress as EI
+import ec2ingress.ip as IP
 from ec2ingress.models import Ingress
-from ec2ingress.log import logger
 
 
 def get_group(args, exit_on_err=True):
@@ -29,17 +27,13 @@ def show(args):
 
 
 def _set(args):
-    if not args.ip:
-        args.ip = ipgetter.myip()
     group = get_group(args)
-    group.set(args.ip or ipgetter.myip(), port=args.port)
+    group.set(args.ip or IP.myip(), port=args.port)
 
 
 def add(args):
-    if not args.ip:
-        args.ip = ipgetter.myip()
     group = get_group(args)
-    group.add(args.ip or ipgetter.myip(), port=args.port)
+    group.add(args.ip or IP.myip(), port=args.port)
 
 
 def remove(args):
@@ -70,8 +64,8 @@ def main(argv=None):
     subparsers = parser.add_subparsers(help='available commands')
 
     ip_arg_help = ('IP (or CIDR address) for ingress rule -- if not given, '
-                   'your public IP address will be looked up using the '
-                   'ipgetter library and used as the only IP for ingress')
+                   'your public IP address will be looked up '
+                   'and used as the only IP for ingress')
     port_arg_help = 'ingress PORT (default 22)'
 
     # 'set' command and params
@@ -112,7 +106,7 @@ def main(argv=None):
         sys.exit(0)
 
     if args.verbose or args.very_verbose:
-        logger.setLevel(logging.DEBUG)
+        EI.logger.setLevel(logging.DEBUG)
     if args.very_verbose:
         logging.getLogger('boto3').setLevel(logging.DEBUG)
         logging.getLogger('botocore').setLevel(logging.DEBUG)

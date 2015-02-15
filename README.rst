@@ -13,9 +13,9 @@ SSH access from my current public IP, I run::
 
     ec2ingress --group-name SSH set
 
-That uses the `ipgetter` library to determine what my current public IP
-address is, removes existing ingress rules to port 22 (`--port` defaults to 22),
-and then adds a single ingress rule for port 22 from my current IP.
+That command looks up the current public address, removes existing ingress
+rules to port 22 (`--port` defaults to 22), and then adds a single ingress rule
+allowing access to port 22 from just my current IP.
 
 Setup
 -----
