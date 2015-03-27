@@ -2,6 +2,9 @@
 ec2ingress
 ==========
 
+.. image:: https://travis-ci.org/eukaryote/ec2ingress.svg?branch=master
+    :target: https://travis-ci.org/eukaryote/ec2ingress
+
 ec2ingress is a commandline script to simplify management of EC2 ingress rules
 for a particular EC2 security group. The defaults make it especially easy to
 restrict SSH access on a security group to just the IP address of the
