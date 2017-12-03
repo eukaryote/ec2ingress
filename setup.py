@@ -13,8 +13,8 @@ HERE_DIR = abspath(dirname(__file__))
 NAME = 'ec2ingress'
 
 
-if sys.version_info < (2, 7):
-    msg = "ERROR: Python Version 2.7 or above is required. Exiting."
+if sys.version_info < (2, 7) or ((3, 0) <= sys.version_info < (3, 4)):
+    msg = "ERROR: Only Python 2.7 or 3.4+ are supported. Exiting."
     print(msg, file=sys.stderr)
     sys.exit(1)
 

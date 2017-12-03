@@ -1,8 +1,6 @@
 language: python
 python:
   - "2.7"
-  - "3.2"
-  - "3.3"
   - "3.4"
   - "3.5"
   - "3.6"
@@ -12,10 +10,9 @@ python:
 
 # command to install dependencies
 install:
-  - pip install -r requirements.txt -r requirements.test.txt
+  - pip install -r <(cat requirements.txt requirements.test.txt)
 # command to run tests
 script:
-  - hash -r
   - pytest --version
   - pytest
 branches:
