@@ -1,35 +1,44 @@
 from __future__ import print_function
 
+import codecs
 import sys
 import os
 from os.path import join, abspath, dirname
+import re
 
 from setuptools import setup
 from setuptools.command.test import test
 
-import ec2ingress
+HERE_DIR = abspath(dirname(__file__))
+NAME = 'ec2ingress'
 
-here_dir = abspath(dirname(__file__))
 
 if sys.version_info < (2, 7):
-    error = "ERROR: Python Version 2.7 or above is required. Exiting."
-    print(error, file=sys.stderr)
+    msg = "ERROR: Python Version 2.7 or above is required. Exiting."
+    print(msg, file=sys.stderr)
     sys.exit(1)
 
 
 def read(*filenames):
     buf = []
     for filename in filenames:
-        with open(os.path.join(here_dir, filename)) as f:
+        with codecs.open(os.path.join(HERE_DIR, filename), 'r') as f:
             buf.append(f.read())
     return '\n\n'.join(buf)
 
 
+def find_version(*filenames):
+    version_file = read(os.path.join(*filenames))
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
+                              version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError("Unable to find version string.")
+
+
 def get_requirements():
-    with open(join(here_dir, 'requirements.txt')) as f:
-        reqs = f.read().splitlines()
-        print('requirements: %s' % (reqs,))
-        return reqs
+    with open(join(HERE_DIR, 'requirements.txt')) as f:
+        return f.read().splitlines()
 
 
 class PyTest(test):
@@ -46,8 +55,8 @@ class PyTest(test):
 
 
 setup(
-    name='ec2ingress',
-    version=ec2ingress.__version__,
+    name=NAME,
+    version=find_version(NAME, '__init__.py'),
     license='http://www.opensource.org/licenses/mit-license.php',
     url='https://github.com/eukaryote/ec2ssh',
     description='Control SSH Access to EC2 instances',
@@ -55,7 +64,7 @@ setup(
     keywords='aws ec2 ssh',
     author='Calvin Smith',
     author_email='sapientdust+ec2ssh@gmail.com',
-    packages=[ec2ingress.__name__],
+    packages=[NAME],
     platforms='any',
     cmdclass={'test': PyTest},
     install_requires=get_requirements(),
@@ -63,7 +72,7 @@ setup(
     test_suite='tests',
     entry_points={
         'console_scripts': [
-            '{name} = {name}.main:main'.format(name=ec2ingress.__name__),
+            '{name} = {name}.main:main'.format(name=NAME),
         ]
     },
     classifiers=[
